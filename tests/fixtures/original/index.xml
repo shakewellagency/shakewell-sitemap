@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex xmlns="https://www.sitemaps.org/schemas/sitemap/0.9">
+	<sitemap>
+		<loc>{HOME}/sitemap-post-type-post.xml</loc>
+		<lastmod>2024-04-01T08:15:00+00:00</lastmod>
+	</sitemap>
+	<sitemap>
+		<loc>{HOME}/sitemap-post-type-page.xml</loc>
+		<lastmod>2024-05-04T10:00:00+00:00</lastmod>
+	</sitemap>
+	<sitemap>
+		<loc>{HOME}/sitemap-post-type-venue.xml</loc>
+		<lastmod>2024-06-02T11:00:00+00:00</lastmod>
+	</sitemap>
+	<sitemap>
+		<loc>{HOME}/sitemap-post-type-event.xml</loc>
+		<lastmod>2024-07-03T18:00:00+00:00</lastmod>
+	</sitemap>
+</sitemapindex>
