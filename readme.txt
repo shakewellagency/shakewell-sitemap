@@ -8,7 +8,7 @@ Stable tag: 0.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-A small XML sitemap for normal and headless WordPress sites: choose post types and taxonomies, ignore paths, publish a different host, split into files.
+A small XML sitemap for normal and headless sites: post types, taxonomies, ignored paths, a public host and entries per file.
 
 == Description ==
 
