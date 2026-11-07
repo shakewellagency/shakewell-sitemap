@@ -14,7 +14,7 @@ defined( 'ABSPATH' ) || exit;
  */
 final class Sitemap {
 
-	private const NS_SITEMAP = 'https://www.sitemaps.org/schemas/sitemap/0.9';
+	private const NS_SITEMAP = 'http://www.sitemaps.org/schemas/sitemap/0.9';
 
 	/**
 	 * Constructor.
@@ -69,7 +69,7 @@ final class Sitemap {
 			return null;
 		}
 
-		$out = $head . '<urlset xmlns="' . self::NS_SITEMAP . '" xmlns:image="https://www.google.com/schemas/sitemap-image/1.1" xmlns:xhtml="https://www.w3.org/1999/xhtml">' . "\n";
+		$out = $head . '<urlset xmlns="' . self::NS_SITEMAP . '">' . "\n";
 		if ( 1 === $page && 'post' === $kind && 'page' === $slug && 'posts' === get_option( 'show_on_front' ) ) {
 			$out .= "\t<url>\n\t\t<loc>" . esc_url( $this->url( '/' ) ) . "</loc>\n\t</url>\n";
 		}
@@ -246,7 +246,7 @@ final class Sitemap {
 			if ( ! apply_filters( 'shakewell_sitemap_include_post', true, $id, $type ) ) {
 				continue;
 			}
-			$link           = esc_url( addslashes( $this->publicise( (string) get_permalink( $id ) ) ) );
+			$link           = esc_url( $this->publicise( (string) get_permalink( $id ) ) );
 			$links[ $link ] = gmdate( 'c', strtotime( $row->post_modified_gmt ) );
 		}
 		return $links;
@@ -269,7 +269,7 @@ final class Sitemap {
 		foreach ( is_array( $terms ) ? $terms : array() as $term ) {
 			$link = get_term_link( $term );
 			if ( is_string( $link ) ) {
-				$links[ esc_url( addslashes( $this->publicise( $link ) ) ) ] = null;
+				$links[ esc_url( $this->publicise( $link ) ) ] = null;
 			}
 		}
 		return $links;
