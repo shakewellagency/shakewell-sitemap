@@ -3,7 +3,7 @@
  * Plugin Name:       Shakewell Sitemap
  * Plugin URI:        https://github.com/shakewellagency/shakewell-sitemap
  * Description:       A small XML sitemap for normal and headless WordPress sites: post types, taxonomies, ignored paths, the public host and entries per file.
- * Version:           0.1.0
+ * Version:           0.1.1
  * Requires at least: 6.5
  * Requires PHP:      8.1
  * Author:            Shakewell
@@ -19,7 +19,7 @@ namespace Shakewell\Sitemap;
 
 defined( 'ABSPATH' ) || exit;
 
-const VERSION = '0.1.0';
+const VERSION = '0.1.1';
 const FILE    = __FILE__;
 
 require_once __DIR__ . '/src/Settings.php';

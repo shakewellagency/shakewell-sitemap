@@ -1,10 +1,10 @@
 === Shakewell Sitemap ===
-Contributors: shakewell
+Contributors: shakewellagency
 Tags: sitemap, xml sitemap, seo, headless
 Requires at least: 6.5
 Tested up to: 7.1
 Requires PHP: 8.1
-Stable tag: 0.1.0
+Stable tag: 0.1.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -12,7 +12,7 @@ A small XML sitemap for normal and headless sites: post types, taxonomies, ignor
 
 == Description ==
 
-Shakewell Sitemap serves `/sitemap.xml` (an index) and one sitemap per post type or taxonomy you choose, at `/sitemap-post-type-<type>.xml` and `/sitemap-taxonomy-<taxonomy>.xml`. It has no ads, no tracking and no locked features.
+Shakewell Sitemap serves `/sitemap.xml` (an index) and one sitemap per post type or taxonomy you choose, at `/sitemap-post-type-<type>.xml` and `/sitemap-taxonomy-<taxonomy>.xml`. It has no ads, no tracking and no locked features. With no configuration it lists posts and pages, which is all most sites need; activate it, make sure permalinks are not "Plain", and open `/sitemap.xml`.
 
 * Lists published content only. Drafts, pending, private and trashed content is never listed.
 * Leaves out password protected content and content marked noindex by Yoast SEO or Rank Math (switchable).
@@ -57,18 +57,6 @@ With entries per file set, page 1 keeps the plain name (`sitemap-post-type-post.
 
 None. The plugin makes no outside requests.
 
-= Moving from Merivale Sitemap =
-
-This plugin replaces the Merivale sitemap plugin (`merivale-sitemap`) and produces the same files, URLs, order and XML for Merivale's settings. Merivale needs these settings:
-
-* `define( 'SHAKEWELL_SITEMAP_PER_PAGE', 0 );` One file per type, as before.
-* `define( 'SHAKEWELL_SITEMAP_EXCLUDE_HIDDEN', false );` Merivale Sitemap listed password protected content and did not read noindex flags.
-* Post types and ignored strings: copy them from the old option, once:
-`wp eval '$o = get_option( "merivale_sitemap", array() ); update_option( "shakewell_sitemap", array( "post_types" => $o["post_types"] ?? array(), "taxonomies" => array(), "ignore" => $o["url_ignore"] ?? "", "public_url" => "", "per_page" => 0, "exclude_hidden" => false, "disable_core" => true ) );'`
-* Leave the public site URL empty: Merivale's Next.js site swaps the WordPress host itself.
-
-Then deactivate Merivale Sitemap, activate Shakewell Sitemap, run `wp rewrite flush`, and compare `/sitemap.xml` and each `/sitemap-post-type-*.xml` before and after. What differs: the plugin no longer pings Google and Bing on save; a sitemap URL for a type that is not switched on, or a page number that does not exist, returns 404 instead of a list; an empty post type is left out of the index instead of causing a PHP warning.
-
 == Installation ==
 
 1. Upload the plugin folder to `/wp-content/plugins/`, or install it with Composer.
@@ -95,5 +83,9 @@ Please do not open a public issue. Follow SECURITY.md in the plugin's repository
 
 == Changelog ==
 
+= 0.1.1 =
+* Sitemap files now declare the standard sitemaps.org namespace over http, as search engines expect.
+* Removed the image and alternate language namespaces, which were declared but never used.
+
 = 0.1.0 =
-* First release. Based on Merivale Sitemap 1.1.0 with identical output for the same settings, generalised with settings, constants and filters, taxonomy sitemaps, paging, a public host and a safe cache.
+* First release: sitemap index, post type and taxonomy sitemaps, settings, constants and filters, paging, a public host and a safe cache.
