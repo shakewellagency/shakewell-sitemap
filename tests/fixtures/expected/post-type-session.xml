@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+	<url>
+		<loc>{HOME}/sessions/ampersand-session/?a=1&#038;b=&#039;2&#039;</loc>
+		<lastmod>2024-07-03T18:00:00+00:00</lastmod>
+	</url>
+	<url>
+		<loc>{HOME}/sessions/keynote-fx/</loc>
+		<lastmod>2024-07-01T18:00:00+00:00</lastmod>
+	</url>
+</urlset>

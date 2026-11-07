@@ -1,6 +1,6 @@
 {
     "name": "shakewellagency/shakewell-sitemap",
-    "description": "Starting point for Shakewell WordPress plugins.",
+    "description": "XML sitemaps for normal and headless WordPress sites.",
     "type": "wordpress-plugin",
     "license": "GPL-2.0-or-later",
     "authors": [

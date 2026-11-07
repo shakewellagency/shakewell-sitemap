@@ -1,6 +1,6 @@
 <?php
 /**
- * Sitemap behaviour, including identical output to Merivale Sitemap 1.1.0 for Merivale's settings.
+ * Sitemap behaviour.
  *
  * @package Shakewell\Sitemap
  */
@@ -26,23 +26,23 @@ final class SitemapTest extends WP_UnitTestCase {
 	}
 
 	public function tear_down(): void {
-		unregister_post_type( 'venue' );
-		unregister_post_type( 'event' );
+		unregister_post_type( 'book' );
+		unregister_post_type( 'session' );
 		parent::tear_down();
 	}
 
 	/**
-	 * Merivale's settings, as the Merivale site sets them (see readme.txt, "Moving from Merivale Sitemap").
+	 * Settings that list every fixture type, ignore some strings and put each type in one file.
 	 *
 	 * @param array<string,mixed> $more Extra settings.
 	 */
-	private function merivale( array $more = array() ): array {
+	private function listing( array $more = array() ): array {
 		add_filter(
 			'shakewell_sitemap_settings',
 			static fn( $s ) => array_merge(
 				$s,
 				array(
-					'post_types'     => array( 'post', 'page', 'venue', 'event' ),
+					'post_types'     => array( 'post', 'page', 'book', 'session' ),
 					'ignore'         => Fixtures::IGNORE,
 					'per_page'       => 0,
 					'exclude_hidden' => false,
@@ -61,26 +61,26 @@ final class SitemapTest extends WP_UnitTestCase {
 	/**
 	 * @return array<string,array{string}>
 	 */
-	public static function original_files(): array {
+	public static function expected_files(): array {
 		return array(
 			'index'            => array( 'index', 'index' ),
 			'posts'            => array( 'post-type-post', 'post-type-post' ),
 			'pages'            => array( 'post-type-page', 'post-type-page' ),
-			'venues'           => array( 'post-type-venue', 'post-type-venue' ),
-			'events'           => array( 'post-type-event', 'post-type-event' ),
+			'books'            => array( 'post-type-book', 'post-type-book' ),
+			'sessions'          => array( 'post-type-session', 'post-type-session' ),
 			'static front page' => array( 'post-type-page-static-front', 'post-type-page' ),
 		);
 	}
 
 	/**
-	 * @dataProvider original_files
+	 * @dataProvider expected_files
 	 */
-	public function test_output_is_identical_to_merivale_sitemap( string $fixture, string $name ): void {
+	public function test_output_matches_the_expected_files( string $fixture, string $name ): void {
 		if ( 'post-type-page-static-front' === $fixture ) {
 			update_option( 'show_on_front', 'page' );
 		}
-		$expected = file_get_contents( dirname( __DIR__ ) . "/fixtures/original/{$fixture}.xml" );
-		$this->assertSame( $expected, $this->render( $this->merivale(), $name ) );
+		$expected = file_get_contents( dirname( __DIR__ ) . "/fixtures/expected/{$fixture}.xml" );
+		$this->assertSame( $expected, $this->render( $this->listing(), $name ) );
 	}
 
 	public function test_draft_and_private_content_is_excluded(): void {
@@ -108,7 +108,7 @@ final class SitemapTest extends WP_UnitTestCase {
 	}
 
 	public function test_public_host_replaces_the_wordpress_host_everywhere(): void {
-		$settings = array_merge( $this->merivale(), array( 'public_url' => 'https://www.example.com' ) );
+		$settings = array_merge( $this->listing(), array( 'public_url' => 'https://www.example.com' ) );
 		$index    = $this->render( $settings, 'index' );
 		$this->assertStringContainsString( '<loc>https://www.example.com/sitemap-post-type-post.xml</loc>', $index );
 		$this->assertStringNotContainsString( '{HOME}', $index );
@@ -120,7 +120,7 @@ final class SitemapTest extends WP_UnitTestCase {
 	}
 
 	public function test_entries_are_split_across_files(): void {
-		$settings = array_merge( $this->merivale(), array( 'per_page' => 2, 'exclude_hidden' => true ) );
+		$settings = array_merge( $this->listing(), array( 'per_page' => 2, 'exclude_hidden' => true ) );
 		// Posts left after ignoring: hello, second, third = 2 files.
 		$index = $this->render( $settings, 'index' );
 		$this->assertStringContainsString( 'sitemap-post-type-post.xml', $index );
@@ -137,7 +137,7 @@ final class SitemapTest extends WP_UnitTestCase {
 	}
 
 	public function test_urls_are_escaped(): void {
-		$xml = $this->render( $this->merivale(), 'post-type-event' );
+		$xml = $this->render( $this->listing(), 'post-type-session' );
 		$this->assertStringContainsString( '?a=1&#038;b=&#039;2&#039;</loc>', $xml );
 		$this->assertStringNotContainsString( '&b=', $xml );
 		$this->assertNotFalse( simplexml_load_string( $xml ), 'well-formed XML' );
@@ -180,7 +180,7 @@ final class SitemapTest extends WP_UnitTestCase {
 
 	public function test_unknown_or_switched_off_types_are_not_found(): void {
 		$settings = Settings::get(); // Posts and pages only.
-		$this->assertNull( $this->render( $settings, 'post-type-venue' ) );
+		$this->assertNull( $this->render( $settings, 'post-type-book' ) );
 		$this->assertNull( $this->render( $settings, 'post-type-nope' ) );
 		$this->assertNull( $this->render( $settings, 'taxonomy-category' ) );
 		$this->assertNull( $this->render( $settings, 'other' ) );

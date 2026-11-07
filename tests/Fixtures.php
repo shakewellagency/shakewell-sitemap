@@ -1,6 +1,6 @@
 <?php
 /**
- * Deterministic content shared by the tests and the one-off capture of the original plugin's output.
+ * Deterministic content shared by the tests.
  *
  * @package Shakewell\Sitemap
  */
@@ -8,7 +8,7 @@
 namespace Shakewell\Sitemap\Tests;
 
 /**
- * Posts, pages, venues and events with fixed slugs and dates.
+ * Posts, pages, books and sessions with fixed slugs and dates.
  */
 final class Fixtures {
 
@@ -23,19 +23,19 @@ final class Fixtures {
 		$wp_rewrite->init();
 		create_initial_taxonomies();
 		register_post_type(
-			'venue',
+			'book',
 			array(
 				'public'  => true,
-				'label'   => 'Venues',
-				'rewrite' => array( 'slug' => 'venues' ),
+				'label'   => 'Books',
+				'rewrite' => array( 'slug' => 'books' ),
 			)
 		);
 		register_post_type(
-			'event',
+			'session',
 			array(
 				'public'  => true,
-				'label'   => 'Events',
-				'rewrite' => array( 'slug' => 'whats-on' ),
+				'label'   => 'Sessions',
+				'rewrite' => array( 'slug' => 'sessions' ),
 			)
 		);
 		$wp_rewrite->flush_rules( false );
@@ -43,7 +43,7 @@ final class Fixtures {
 		add_filter(
 			'post_type_link',
 			static function ( $link, $post ) {
-				return 'ampersand-event' === $post->post_name ? $link . "?a=1&b='2'" : $link;
+				return 'ampersand-session' === $post->post_name ? $link . "?a=1&b='2'" : $link;
 			},
 			10,
 			2
@@ -56,7 +56,7 @@ final class Fixtures {
 	public static function create(): void {
 		$all = get_posts(
 			array(
-				'post_type'   => array( 'post', 'page', 'venue', 'event' ),
+				'post_type'   => array( 'post', 'page', 'book', 'session' ),
 				'post_status' => 'any',
 				'numberposts' => -1,
 				'fields'      => 'ids',
@@ -79,11 +79,11 @@ final class Fixtures {
 			array( 'page', 'about-fx', 'publish', '2024-05-01 10:00:00', array() ),
 			array( 'page', 'contact-fx', 'publish', '2024-05-02 10:00:00', array() ),
 			array( 'page', 'draft-page-fx', 'draft', '2024-05-03 10:00:00', array() ),
-			array( 'venue', 'harbour-fx', 'publish', '2024-06-01 11:00:00', array() ),
-			array( 'venue', 'rooftop-fx', 'publish', '2024-06-02 11:00:00', array() ),
-			array( 'event', 'gala-fx', 'publish', '2024-07-01 18:00:00', array() ),
-			array( 'event', 'skip-me-event', 'publish', '2024-07-02 18:00:00', array() ),
-			array( 'event', 'ampersand-event', 'publish', '2024-07-03 18:00:00', array() ),
+			array( 'book', 'dune-fx', 'publish', '2024-06-01 11:00:00', array() ),
+			array( 'book', 'emma-fx', 'publish', '2024-06-02 11:00:00', array() ),
+			array( 'session', 'keynote-fx', 'publish', '2024-07-01 18:00:00', array() ),
+			array( 'session', 'skip-me-session', 'publish', '2024-07-02 18:00:00', array() ),
+			array( 'session', 'ampersand-session', 'publish', '2024-07-03 18:00:00', array() ),
 		);
 
 		$about = 0;
